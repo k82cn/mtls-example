@@ -1,0 +1,23 @@
+[package]
+name = "mtls-example"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tonic = { version = "0.14", features = ["_tls-any"] }
+prost = "0.14"
+tonic-prost = "*"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+openssl = "0.10.73"
+tonic-openssl = "0.3.0"
+
+[build-dependencies]
+tonic-prost-build = "*"
+
+[[bin]]
+name = "mtls-client"
+path = "src/client.rs"
+
+[[bin]]
+name = "mtls-server"
+path = "src/server.rs"
