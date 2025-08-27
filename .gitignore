@@ -1,1 +1,5 @@
 /target
+
+# Ignore generated certificates and keys, but keep the OpenSSL config
+/certs/*
+!/certs/openssl.ext
