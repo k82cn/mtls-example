@@ -19,10 +19,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ca = Certificate::from_pem(ca_cert_pem);
     let identity = Identity::from_pem(client_cert_pem, client_key_pem);
 
-    let tls = ClientTlsConfig::new()
-        .ca_certificate(ca)
-        .identity(identity)
-        .domain_name("localhost");
+    let tls = ClientTlsConfig::new().ca_certificate(ca).identity(identity);
 
     let channel = Channel::from_shared("https://localhost:50051".to_string())?
         .tls_config(tls)?

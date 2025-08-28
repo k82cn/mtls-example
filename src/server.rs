@@ -24,22 +24,20 @@ impl Greeter for MyGreeter {
         let peer_certs = request.peer_certs();
         if let Some(certs) = peer_certs {
             log::info!("Peer certs: {:?}", certs.len());
-            certs.iter().for_each(|cert| {
-                // Parse the certificate with x509-parser to get the subject name
-                let cert_bytes = cert.as_ref();
-                match x509_parser::parse_x509_certificate(cert_bytes) {
-                    Ok((_, x509_cert)) => {
-                        log::info!("Peer cert subject: {}", x509_cert.subject());
-                        log::info!("Peer cert issuer: {}", x509_cert.issuer());
-                        log::info!("Peer cert extensions: {:?}", x509_cert.extensions());
-                        log::info!("Peer cert raw serial: {:?}", x509_cert.raw_serial());
-                        log::info!("Peer cert version: {:?}", x509_cert.version());
-                    }
-                    Err(e) => {
-                        log::warn!("Failed to parse peer certificate: {:?}", e);
-                    }
+            let cert = certs.iter().next().unwrap();
+            let cert_bytes = cert.as_ref();
+            match x509_parser::parse_x509_certificate(cert_bytes) {
+                Ok((_, x509_cert)) => {
+                    log::info!("Peer cert subject: {}", x509_cert.subject());
+                    log::info!("Peer cert issuer: {}", x509_cert.issuer());
+                    log::info!("Peer cert extensions: {:?}", x509_cert.extensions());
+                    log::info!("Peer cert raw serial: {:?}", x509_cert.raw_serial());
+                    log::info!("Peer cert version: {:?}", x509_cert.version());
                 }
-            })
+                Err(e) => {
+                    log::warn!("Failed to parse peer certificate: {:?}", e);
+                }
+            }
         }
 
         let reply = HelloReply {
